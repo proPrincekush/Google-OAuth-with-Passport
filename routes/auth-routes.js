@@ -13,10 +13,16 @@ router.get("/google",passport.authenticate('google',{
 }))
 
 // google redirect route
-router.get("/google/redirect",passport.authorize('google'),(req,res)=>{
-    req.login(req.user,()=>{
-        res.send(req.user)
-    })
+router.get("/google/redirect",passport.authenticate('google'),(req,res)=>{
+    // req.login(req.user,()=>{
+    //     res.send(req.user)
+    // })
+    if(req.user){
+        res.send(`Welcome ${req.user}`);
+    }else{
+        res.send("there is no user loggeg in.")
+    }
+    
    
 }) 
 

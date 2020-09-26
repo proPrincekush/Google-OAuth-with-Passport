@@ -5,6 +5,8 @@ const passportSetup = require("./config/passport-setup")
 const mongoose = require("mongoose")
 const cookieSession = require("cookie-session");
 const passport = require('passport');
+const cors = require("cors")
+const bodyParser = require("body-parser")
 // const session = require("express-session");
 const user = require('./models/user_model');
 
@@ -30,6 +32,11 @@ app.use(cookieSession({
     keys:[process.env.cookie_key]  // encryption for cookie
 }))
 
+//  for initializing the passport in application
+app.use(passport.initialize()) 
+// for starting session
+app.use(passport.session())
+
 // app.use(session({
 //     secret: 'keyboard cat', 
 //     resave: false,
@@ -50,10 +57,6 @@ const isLoggedIn = (req, res, next) => {
 
 // app.use(require("cookie-parser")({secret:process.env.cookie_key}));
 
-//  for initializing the passport in application
-app.use(passport.initialize()) 
-// for starting session
-app.use(passport.session())
 
 
 //connect to mongo db
@@ -75,6 +78,9 @@ app.get("/",(req,res)=>{
     res.render("Home")
 })
 
+app.get("/home", isLoggedIn,(req,res)=>{
+    res.send(`welcome ${req.user}`)
+})
 
 
 const port = 3000;

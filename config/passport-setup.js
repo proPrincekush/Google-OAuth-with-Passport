@@ -1,12 +1,12 @@
 
 const passport = require("passport")
-const googleStrategy = require("passport-google-oauth20").Strategy;
+const googleStrategy = require("passport-google-oauth20");
 const User = require("../models/user_model")
 
 //  for serializing user
 passport.serializeUser((user,done)=>{
     console.log("serialize");
-    done(null,user._id)
+    done(null,user.id)
 })
 
 //  for deserializing user
@@ -15,8 +15,10 @@ passport.deserializeUser((id,done)=>{
         if (err) {
             console.log(err);
         }
-        done(null,user)
+       else{
         console.log("deserialize");
+        done(null,user) 
+       }
     })
 });
 
@@ -34,7 +36,6 @@ User.findOne({googleId:profile.id},(err,user)=>{
     if (user) {
         // fetch registered user
         console.log("user already exist",user);
-        
         done(null,user);// passing the current user to next step serialize 
     } else {
         // register the user

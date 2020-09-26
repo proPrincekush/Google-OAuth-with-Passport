@@ -13,22 +13,17 @@
 <nav>
     <ul>
     <a href="/">Home</a>
-    <% if(user){%>
-    <a href="/profile">profile</a>  
     <a href="/auth/logout">Logout</a>
-    <% }else{%>
-    <a href="/auth/login">Login</a>
-    <%}%>
-</ul>
+    </ul>
 </nav>
 
 <header>
-    <h1>OAuth Ninja</h1>
-    <h2>Homepage</h2>
+    <h1>Welcome</h1>
+    <h2><%= user.username %> </h2>
 </header>
 
 <main>
-    <p> Probably the best !</p>
+    <p>extra info about user </p>
 </main>
 
 

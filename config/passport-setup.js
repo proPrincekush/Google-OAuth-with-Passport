@@ -5,7 +5,7 @@ const User = require("../models/user_model")
 
 //  for serializing user
 passport.serializeUser((user,done)=>{
-    console.log("serialize");
+    // console.log("serialize");
     done(null,user.id)
 })
 
@@ -16,7 +16,7 @@ passport.deserializeUser((id,done)=>{
             console.log(err);
         }
        else{
-        console.log("deserialize");
+        // console.log("deserialize");
         done(null,user) 
        }
     })
@@ -41,7 +41,8 @@ User.findOne({googleId:profile.id},(err,user)=>{
         // register the user
         User.create({
             username:profile.displayName,
-            googleId:profile.id
+            googleId:profile.id,
+            thumbnail:profile._json.image.url
         }).then(newUser=>{
             console.log(newUser);  // print the new user
             done(null,newUser); // passing the new user to next step serialize 
@@ -49,7 +50,5 @@ User.findOne({googleId:profile.id},(err,user)=>{
     }
 })
 
-
-// return done(error,user)
 })
 )

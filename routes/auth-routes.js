@@ -14,11 +14,9 @@ router.get("/google",passport.authenticate('google',{
 
 // google redirect route
 router.get("/google/redirect",passport.authenticate('google'),(req,res)=>{
-    // req.login(req.user,()=>{
-    //     res.send(req.user)
-    // })
     if(req.user){
-        res.send(`Welcome ${req.user}`);
+        // res.send(`Welcome ${req.user}`);
+        res.redirect("/profile")
     }else{
         res.send("there is no user loggeg in.")
     }
@@ -31,7 +29,10 @@ router.get("/google/redirect",passport.authenticate('google'),(req,res)=>{
 // logout
 router.get("/logout",(req,res)=>{
     // handle with passport
-    res.send(" user logged out.");
+
+    req.logout();
+    console.log("user logged out");
+    res.redirect("/")
 })
 
 module.exports = router;

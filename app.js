@@ -1,26 +1,22 @@
 require('dotenv').config()
 const express =  require("express");
 const authRoutes = require("./routes/auth-routes")
+const profileRoutes = require("./routes/profile")
 const passportSetup = require("./config/passport-setup")
 const mongoose = require("mongoose")
 const cookieSession = require("cookie-session");
 const passport = require('passport');
 const cors = require("cors")
 const bodyParser = require("body-parser")
-// const session = require("express-session");
-const user = require('./models/user_model');
 
 
 const app = express();
-// console.log(process.env.cookie_key);
+
 // setting the view engine
 app.set("view engine","ejs");
-
 app.use(cors())
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
- 
 // parse application/json
 app.use(bodyParser.json())
 
@@ -31,31 +27,11 @@ app.use(cookieSession({
     maxAge:24*60*60*1000, // time for cookie
     keys:[process.env.cookie_key]  // encryption for cookie
 }))
-
 //  for initializing the passport in application
 app.use(passport.initialize()) 
 // for starting session
 app.use(passport.session())
 
-// app.use(session({
-//     secret: 'keyboard cat', 
-//     resave: false,
-//     // store:user,
-//     saveUninitialized: true,
-//     cookie: { maxAge:24*60*60*1000,secure: true }
-// }))
-
-
-// Auth middleware that checks if the user is logged in
-const isLoggedIn = (req, res, next) => {
-    if (req.user) {
-        next();
-    } else {
-        res.sendStatus(401);
-    }
-}
-
-// app.use(require("cookie-parser")({secret:process.env.cookie_key}));
 
 
 
@@ -69,19 +45,13 @@ mongoose.connect(process.env.URI,{
 app.use(express.static("public"))
 //  set up routes
 app.use("/auth",authRoutes);
-
-
+app.use("/profile",profileRoutes)
 
 
 // create home route
 app.get("/",(req,res)=>{
-    res.render("Home")
+    res.render("Home",{user:req.user})
 })
-
-app.get("/home", isLoggedIn,(req,res)=>{
-    res.send(`welcome ${req.user}`)
-})
-
 
 const port = 3000;
 app.listen(port,()=>{

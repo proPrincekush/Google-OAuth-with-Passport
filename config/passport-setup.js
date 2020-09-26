@@ -31,7 +31,7 @@ passport.use(
         // passReqToCallback   : true
 },(accessToken, refreshToken, profile, done)=>{
 // passport callback
-// console.log(profile);
+console.log(profile);
 User.findOne({googleId:profile.id},(err,user)=>{
     if (user) {
         // fetch registered user
@@ -42,9 +42,9 @@ User.findOne({googleId:profile.id},(err,user)=>{
         User.create({
             username:profile.displayName,
             googleId:profile.id,
-            thumbnail:profile._json.image.url
+            thumbnail:profile._json.picture
         }).then(newUser=>{
-            console.log(newUser);  // print the new user
+            console.log("new user",newUser);  // print the new user
             done(null,newUser); // passing the new user to next step serialize 
         }).catch(err=> console.log(err))
     }

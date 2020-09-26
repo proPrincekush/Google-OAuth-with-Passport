@@ -35,4 +35,11 @@ main,header{
     background: #ff5353;
     border-radius: 5px;
 }
+img{ 
+    border-radius: 45%;
+    height: 5vh;
+    width: 4vw;
+    /* display: inline; */
+   
+}
 
